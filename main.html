@@ -100,8 +100,8 @@
     <div class="carousel-container">
       <h2>Welcome to IDEAL Bank</h2>
       <p>Experience the best banking services</p>
-      <button class="btn btn-admin">Admin Login</button>
-      <button class="btn btn-user">User Login</button>
+      <button class="btn btn-admin">ADMIN</button>
+      <button class="btn btn-user">USER</button>
     </div>
   </div>
 
@@ -128,33 +128,50 @@
         icon: 'info',
         title: 'Login',
         html: `
-          ${userType === 'Admin' ? '<input type="text" id="employeeCode" class="swal2-input" placeholder="Employee Code">' : ''}
-          ${userType === 'User' ? '<input type="text" id="accountNumber" class="swal2-input" placeholder="Account Number">' : ''}
+          ${userType === 'Admin' ? '<input type="password" id="adminPin" class="swal2-input" placeholder="Admin Pin">' : ''}
+          ${userType === 'User' ? '<input type="text" id="customerID" class="swal2-input" placeholder="Customer ID">' : ''}
         `,
         showCancelButton: true,
         confirmButtonText: 'Login',
         cancelButtonText: 'Cancel',
         preConfirm: () => {
           if (userType === 'Admin') {
-            const employeeCode = document.getElementById('employeeCode').value;
-            return { employeeCode: employeeCode };
+            const adminPin = document.getElementById('adminPin').value;
+            return { adminPin: adminPin };
           } else if (userType === 'User') {
-            const accountNumber = document.getElementById('accountNumber').value;
-            return { accountNumber: accountNumber };
+            const customerID = document.getElementById('customerID').value;
+            return { customerID: customerID };
           }
         }
       }).then((result) => {
         if (result.isConfirmed) {
           if (userType === 'Admin') {
-            const employeeCode = result.value.employeeCode;
-            // Perform login validation or further actions for admin login
-            console.log(`Employee Code: ${employeeCode}`);
-            window.location.href = 'http://127.0.0.1:5500/index.html';
+            const adminPin = result.value.adminPin;
+            if (adminPin === '123456') {
+              // Perform login validation or further actions for admin login
+              console.log(`Admin Pin: ${adminPin}`);
+              window.location.href = 'http://127.0.0.1:5500/index.html';
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Invalid Admin Pin',
+                text: 'Please enter a valid admin pin.',
+                confirmButtonText: 'OK'
+              });
+            }
           } else if (userType === 'User') {
-            const accountNumber = result.value.accountNumber;
-            // Perform login validation or further actions for user login
-            console.log(`Account Number: ${accountNumber}`);
-            window.location.href = 'http://127.0.0.1:5500/user.html';
+            const customerID = result.value.customerID;
+            if (customerID === '10') {
+              // Redirect the user with customer ID 10 to a different page
+              window.location.href = 'http://127.0.0.1:5500/user.html';
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Invalid Customer ID',
+                text: 'Please enter a valid customer ID.',
+                confirmButtonText: 'OK'
+              });
+            }
           }
         }
       });

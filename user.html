@@ -1,78 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank Website</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .profile-card {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+
+    .profile-card .details {
+      margin-left: 20px;
+    }
+
+    .profile-card p {
+      margin: 10px 0;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn-container button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .btn-container button:hover {
+      background-color: #45a049;
+    }
+
+    @media screen and (max-width: 600px) {
+      .profile-card {
+        flex-direction: column;
+      }
+
+      .profile-card img {
+        margin: 0 auto 20px;
+      }
+
+      .profile-card .details {
+        margin-left: 0;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <!-- Your bank logo and navigation menu goes here -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div class="container">
-        <!-- Navbar content -->
-      </div>
-    </nav>
-  </header>
-
-  <main class="container mt-5">
-    <!-- Welcome message and account summary -->
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Welcome, John Doe!</h2>
-        <p>Account Number: XXXX-XXXX-XXXX-1234</p>
-        <!-- Additional account information or actions can be displayed here -->
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Account Summary</h5>
-            <!-- Display account balances and other details -->
-          </div>
-        </div>
+  <div class="container">
+    <h1>User Profile</h1>
+    <div class="profile-card">
+      <img src="assests/p-1.jpg" alt="User Photo">
+      <div class="details">
+        <p><strong>Account Holder Name:</strong> vijay</p>
+        <p><strong>Account Number:</strong> 787799</p>
+        <p><strong>Account Type:</strong> Savings</p>
+        <p><strong>Address:</strong> Chennai</p>
+        <p id="balance"><strong>Balance:</strong> 78,900</p>
+        <p><strong>ID:</strong> 10</p>
       </div>
     </div>
-
-    <!-- Offers section -->
-    <div class="row mt-5">
-      <div class="col-md-12">
-        <h3>Special Offers</h3>
-        <div class="card-deck">
-          <!-- Offer cards -->
-          <div class="card">
-            <img src="assests/c-1.png" class="card-img-top" alt="Offer 1">
-            <div class="card-body">
-              <h5 class="card-title">Offer 1</h5>
-              <p class="card-text">Description of the offer.</p>
-              <!-- Additional details or apply button can be added -->
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="assests/c-2.jpg" class="card-img-top" alt="Offer 2">
-            <div class="card-body">
-              <h5 class="card-title">Offer 2</h5>
-              <p class="card-text">Description of the offer.</p>
-              <!-- Additional details or apply button can be added -->
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="assests/c-3.jpg" class="card-img-top" alt="Offer 3">
-            <div class="card-body">
-              <h5 class="card-title">Offer 3</h5>
-              <p class="card-text">Description of the offer.</p>
-              <!-- Additional details or apply button can be added -->
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="btn-container">
+      <button id="withdraw-btn">Withdraw</button>
+      <button id="deposit-btn">Deposit</button>
     </div>
-  </main>
+  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const withdrawBtn = document.getElementById('withdraw-btn');
+    const depositBtn = document.getElementById('deposit-btn');
+    const balanceElement = document.getElementById('balance');
+    let balance = 78900; // Initial balance
+
+    withdrawBtn.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Withdraw Amount',
+        input: 'number',
+        inputLabel: 'Enter the amount',
+        inputAttributes: {
+          step: 'any',
+          min: 0,
+          max: balance // Maximum withdrawal amount is the current balance
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Withdraw',
+        cancelButtonText: 'Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: (amount) => {
+          // Process the withdrawal logic here
+          // You can perform AJAX requests or handle the logic locally
+          // Replace the following lines with your own logic
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              // Update the balance
+              balance -= Number(amount);
+              resolve();
+            }, 1000);
+          });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Update the balance element with the new balance
+          balanceElement.innerText = `Balance: ${balance.toLocaleString()}`;
+          Swal.fire({
+            icon: 'success',
+            title: 'Withdrawal Successful',
+            text: 'Amount has been withdrawn.'
+          });
+        }
+      });
+    });
+
+    depositBtn.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Deposit Amount',
+        input: 'number',
+        inputLabel: 'Enter the amount',
+        inputAttributes: {
+          step: 'any',
+          min: 0
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Deposit',
+        cancelButtonText: 'Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: (amount) => {
+          // Process the deposit logic here
+          // You can perform AJAX requests or handle the logic locally
+          // Replace the following lines with your own logic
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              // Update the balance
+              balance += Number(amount);
+              resolve();
+            }, 1000);
+          });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Update the balance element with the new balance
+          balanceElement.innerText = `Balance: ${balance.toLocaleString()}`;
+          Swal.fire({
+            icon: 'success',
+            title: 'Deposit Successful',
+            text: 'Amount has been deposited.'
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
