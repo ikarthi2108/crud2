@@ -15,7 +15,6 @@
     h2 {
       color: #000305;
       font-family: sans-serif;
-      border: #000000;
     }
 
     .bg-mynav {
@@ -23,21 +22,26 @@
     }
 
     body {
-      font-size: 1.25rem;
+      font-size: 1rem;
       background-color: #ebe7de;
+     
     }
 
     .card {
-      margin-bottom: 20px;
+      margin: 10px;
+      background-color: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .card-body {
-      padding: 20px;
+      padding: 10px;
     }
 
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: bold;
+      margin-bottom: 5px;
     }
 
     .card-text {
@@ -47,6 +51,7 @@
     .form-control {
       margin-bottom: 10px;
     }
+  </style>
   </style>
 
   <script>
@@ -65,7 +70,7 @@
           const objects = JSON.parse(this.responseText);
           for (let object of objects) {
             const card = document.createElement("div");
-            card.classList.add("card");
+            card.classList.add("card", "col-md-3");
 
             const cardBody = document.createElement("div");
             cardBody.classList.add("card-body");
@@ -111,243 +116,201 @@
             cardBody.appendChild(balance);
             cardBody.appendChild(editButton);
             cardBody.appendChild(deleteButton);
+
             card.appendChild(cardBody);
+
             cardContainer.appendChild(card);
           }
         }
       };
     }
 
-    // Search function
-    function searchTable() {
-      const input = document.getElementById("search-input");
-      const value = input.value;
-      loadTable(value);
-    }
-
-    // Show add user form
-    function showUserAddBox() {
-      const addForm = document.getElementById("add-form");
-      addForm.style.display = "block";
-    }
-
-    // Hide add user form
-    function hideUserAddBox() {
-      const addForm = document.getElementById("add-form");
-      addForm.style.display = "none";
-    }
-
-    // Add user
-    function userAdd() {
-      const nameInput = document.getElementById("add-name-input");
-      const accNoInput = document.getElementById("add-accno-input");
-      const accTypeInput = document.getElementById("add-acctype-input");
-      const addressInput = document.getElementById("add-address-input");
-      const balanceInput = document.getElementById("add-balance-input");
-
-      const xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "http://localhost:3000/Account");
-      xhttp.setRequestHeader("Content-type", "application/json");
-      const data = JSON.stringify({
-        "AccHolderName": nameInput.value,
-        "AccNo": accNoInput.value,
-        "AccType": accTypeInput.value,
-        "Address": addressInput.value,
-        "Balance": balanceInput.value
-      });
-      xhttp.send(data);
-
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 201) {
-          console.log(this.responseText);
-          loadTable(); // Reload table
-          hideUserAddBox(); // Hide add user form
-        }
-      };
-    }
-
-    // Show edit user form
+    // Show user edit box
     function showUserEditBox(id) {
-      const editForm = document.getElementById("edit-form");
-      editForm.style.display = "block";
-
-      const idInput = document.getElementById("edit-id-input");
-      idInput.value = id;
-
-      const nameInput = document.getElementById("edit-name-input");
-      const accNoInput = document.getElementById("edit-accno-input");
-      const accTypeInput = document.getElementById("edit-acctype-input");
-      const addressInput = document.getElementById("edit-address-input");
-      const balanceInput = document.getElementById("edit-balance-input");
-
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", `http://localhost:3000/Account/${id}`);
       xhttp.send();
 
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-          const object = JSON.parse(this.responseText);
+          const user = JSON.parse(this.responseText);
 
-          nameInput.value = object["AccHolderName"];
-          accNoInput.value = object["AccNo"];
-          accTypeInput.value = object["AccType"];
-          addressInput.value = object["Address"];
-          balanceInput.value = object["Balance"];
+          document.getElementById("edit-form").style.display = "block";
+          document.getElementById("edit-id").value = user["id"];
+          document.getElementById("edit-acc-holder-name").value = user["AccHolderName"];
+          document.getElementById("edit-acc-no").value = user["AccNo"];
+          document.getElementById("edit-acc-type").value = user["AccType"];
+          document.getElementById("edit-address").value = user["Address"];
+          document.getElementById("edit-balance").value = user["Balance"];
         }
       };
     }
 
-    // Hide edit user form
-    function hideUserEditBox() {
-      const editForm = document.getElementById("edit-form");
-      editForm.style.display = "none";
-    }
+    // Submit user edit
+    function submitUserEdit() {
+      const id = document.getElementById("edit-id").value;
+      const AccHolderName = document.getElementById("edit-acc-holder-name").value;
+      const AccNo = document.getElementById("edit-acc-no").value;
+      const AccType = document.getElementById("edit-acc-type").value;
+      const Address = document.getElementById("edit-address").value;
+      const Balance = document.getElementById("edit-balance").value;
 
-    // Edit user
-    function userEdit() {
-      const idInput = document.getElementById("edit-id-input");
-      const nameInput = document.getElementById("edit-name-input");
-      const accNoInput = document.getElementById("edit-accno-input");
-      const accTypeInput = document.getElementById("edit-acctype-input");
-      const addressInput = document.getElementById("edit-address-input");
-      const balanceInput = document.getElementById("edit-balance-input");
+      const user = {
+        AccHolderName,
+        AccNo,
+        AccType,
+        Address,
+        Balance
+      };
 
       const xhttp = new XMLHttpRequest();
-      xhttp.open("PUT", `http://localhost:3000/Account/${idInput.value}`);
+      xhttp.open("PUT", `http://localhost:3000/Account/${id}`);
       xhttp.setRequestHeader("Content-type", "application/json");
-      const data = JSON.stringify({
-        "AccHolderName": nameInput.value,
-        "AccNo": accNoInput.value,
-        "AccType": accTypeInput.value,
-        "Address": addressInput.value,
-        "Balance": balanceInput.value
-      });
-      xhttp.send(data);
+      xhttp.send(JSON.stringify(user));
 
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-          loadTable(); // Reload table
-          hideUserEditBox(); // Hide edit user form
+          alert("User updated successfully!");
+          document.getElementById("edit-form").style.display = "none";
+          loadTable();
         }
       };
     }
 
-    // Delete user
+    // Submit user delete
     function userDelete(id) {
       const xhttp = new XMLHttpRequest();
       xhttp.open("DELETE", `http://localhost:3000/Account/${id}`);
+      xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send();
 
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-          loadTable(); // Reload table
+          alert("User deleted successfully!");
+          loadTable();
         }
       };
     }
 
-    // Initial load
-    document.addEventListener("DOMContentLoaded", function () {
-      loadTable();
-    });
+    // Submit user add
+    function submitUserAdd() {
+      const AccHolderName = document.getElementById("add-acc-holder-name").value;
+      const AccNo = document.getElementById("add-acc-no").value;
+      const AccType = document.getElementById("add-acc-type").value;
+      const Address = document.getElementById("add-address").value;
+      const Balance = document.getElementById("add-balance").value;
+
+      const user = {
+        AccHolderName,
+        AccNo,
+        AccType,
+        Address,
+        Balance
+      };
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://localhost:3000/Account");
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send(JSON.stringify(user));
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 201) {
+          alert("User added successfully!");
+          document.getElementById("add-form").reset();
+          loadTable();
+        }
+      };
+    }
   </script>
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-mynav">
-    <div class="container">
-      <a class="navbar-brand" href="#">CRUD App</a>
+<body onload="loadTable()">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-mynav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">CRUD FROM API</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 
   <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Account Details</h2>
-      </div>
-      <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary" onclick="showUserAddBox()">Add Person</button>
-      </div>
+    <h2 class="text-center mb-4">Bank Account List</h2>
+
+    <div class="mb-3">
+      <input type="text" class="form-control" id="search-input" placeholder="Search by Account Holder Name"
+        onkeyup="loadTable(this.value)">
     </div>
 
-    <!-- Search -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" id="search-input" placeholder="Search by Account Holder Name"
-            oninput="searchTable()">
-          <button class="btn btn-outline-secondary" type="button" id="search-button"
-            onclick="searchTable()">Search</button>
-        </div>
-      </div>
+    <div id="card-container" class="row">
+      <!-- Cards will be dynamically added here -->
     </div>
 
-    <!-- Cards -->
-    <div class="row" id="card-container"></div>
-
-    <!-- Add user form -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card" id="add-form" style="display: none;">
-          <div class="card-body">
-            <h5 class="card-title">Add Person</h5>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="add-name-input" placeholder="Account Holder Name">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="add-accno-input" placeholder="Account Number">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="add-acctype-input" placeholder="Account Type">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="add-address-input" placeholder="Address">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="add-balance-input" placeholder="Balance">
-            </div>
-            <button class="btn btn-success" onclick="userAdd()">Add</button>
-            <button class="btn btn-secondary" onclick="hideUserAddBox()">Cancel</button>
-          </div>
-        </div>
+    <!-- Edit form -->
+    <form id="edit-form" style="display: none;">
+      <input type="hidden" id="edit-id">
+      <div class="mb-3">
+        <label for="edit-acc-holder-name" class="form-label">Account Holder Name</label>
+        <input type="text" class="form-control" id="edit-acc-holder-name" required>
       </div>
-    </div>
-
-    <!-- Edit user form -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card" id="edit-form" style="display: none;">
-          <div class="card-body">
-            <h5 class="card-title">Edit Person</h5>
-            <div class="mb-3">
-              <input type="hidden" id="edit-id-input">
-              <input type="text" class="form-control" id="edit-name-input" placeholder="Account Holder Name">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="edit-accno-input" placeholder="Account Number">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="edit-acctype-input" placeholder="Account Type">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="edit-address-input" placeholder="Address">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control" id="edit-balance-input" placeholder="Balance">
-            </div>
-            <button class="btn btn-success" onclick="userEdit()">Save</button>
-            <button class="btn btn-secondary" onclick="hideUserEditBox()">Cancel</button>
-          </div>
-        </div>
+      <div class="mb-3">
+        <label for="edit-acc-no" class="form-label">Account Number</label>
+        <input type="text" class="form-control" id="edit-acc-no" required>
       </div>
-    </div>
+      <div class="mb-3">
+        <label for="edit-acc-type" class="form-label">Account Type</label>
+        <input type="text" class="form-control" id="edit-acc-type" required>
+      </div>
+      <div class="mb-3">
+        <label for="edit-address" class="form-label">Address</label>
+        <input type="text" class="form-control" id="edit-address" required>
+      </div>
+      <div class="mb-3">
+        <label for="edit-balance" class="form-label">Balance</label>
+        <input type="text" class="form-control" id="edit-balance" required>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="submitUserEdit()">Submit</button>
+    </form>
+
+    <!-- Add form -->
+    <form id="add-form">
+      <div class="mb-3">
+        <label for="add-acc-holder-name" class="form-label">Account Holder Name</label>
+        <input type="text" class="form-control" id="add-acc-holder-name" required>
+      </div>
+      <div class="mb-3">
+        <label for="add-acc-no" class="form-label">Account Number</label>
+        <input type="text" class="form-control" id="add-acc-no" required>
+      </div>
+      <div class="mb-3">
+        <label for="add-acc-type" class="form-label">Account Type</label>
+        <input type="text" class="form-control" id="add-acc-type" required>
+      </div>
+      <div class="mb-3">
+        <label for="add-address" class="form-label">Address</label>
+        <input type="text" class="form-control" id="add-address" required>
+      </div>
+      <div class="mb-3">
+        <label for="add-balance" class="form-label">Balance</label>
+        <input type="text" class="form-control" id="add-balance" required>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="submitUserAdd()">Add User</button>
+    </form>
   </div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-pzjB+1WKYdPqgYHNRYfv7kyySgCva5HZG5EPT0o3StfYQ2BRuzQG7hhpux2spzPt" crossorigin="anonymous"></script>
+    integrity="sha384-tM4h3d2O+BBR0a4MEF1tlBfSdOnL2PZfcT8SruhPkd4zP6P78pQbZc3LGud+q6/k"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

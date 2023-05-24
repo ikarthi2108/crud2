@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Website</title>
+  <!-- Include SweetAlert CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css">
+  <style>
+    body {
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbar {
+      display: flex;
+    }
+    
+    .nav-item {
+      margin-right: 20px;
+      color: #070000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .nav-item:hover {
+      text-decoration: underline;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 18px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-admin {
+      background-color: #0765f3;
+    }
+    
+    .btn-user {
+      background-color: #0765f3;
+    }
+    
+    .btn:hover {
+      background-color: #080808;
+    }
+    
+    .carousel {
+      width: 100%;
+      height: 100vh; /* Set the height to 100vh (viewport height) */
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(assests/bg1.webp) no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .carousel-container {
+      padding: 20px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      max-width: 400px;
+    }
+    
+    .carousel h2 {
+      color: #fff;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    
+    .carousel p {
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel">
+    <div class="carousel-container">
+      <h2>Welcome to IDEAL Bank</h2>
+      <p>Experience the best banking services</p>
+      <button class="btn btn-admin">Admin Login</button>
+      <button class="btn btn-user">User Login</button>
+    </div>
+  </div>
+
+  <!-- Include SweetAlert JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
+  <script>
+    // Get the login buttons
+    const adminBtn = document.querySelector('.btn-admin');
+    const userBtn = document.querySelector('.btn-user');
+
+    // Add click event listener to the admin button
+    adminBtn.addEventListener('click', () => {
+      showLoginAlert('Admin');
+    });
+
+    // Add click event listener to the user button
+    userBtn.addEventListener('click', () => {
+      showLoginAlert('User');
+    });
+
+    // Function to show the login alert
+    function showLoginAlert(userType) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Login',
+        html: `
+          ${userType === 'Admin' ? '<input type="text" id="employeeCode" class="swal2-input" placeholder="Employee Code">' : ''}
+          ${userType === 'User' ? '<input type="text" id="accountNumber" class="swal2-input" placeholder="Account Number">' : ''}
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          if (userType === 'Admin') {
+            const employeeCode = document.getElementById('employeeCode').value;
+            return { employeeCode: employeeCode };
+          } else if (userType === 'User') {
+            const accountNumber = document.getElementById('accountNumber').value;
+            return { accountNumber: accountNumber };
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (userType === 'Admin') {
+            const employeeCode = result.value.employeeCode;
+            // Perform login validation or further actions for admin login
+            console.log(`Employee Code: ${employeeCode}`);
+            window.location.href = 'http://127.0.0.1:5500/index.html';
+          } else if (userType === 'User') {
+            const accountNumber = result.value.accountNumber;
+            // Perform login validation or further actions for user login
+            console.log(`Account Number: ${accountNumber}`);
+            window.location.href = 'http://127.0.0.1:5500/user.html';
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
