@@ -1,0 +1,86 @@
+{
+  "Account": [
+    {
+      "AccHolderName": "Karthikeyan r",
+      "AccNo": "123478",
+      "AccType": "Savings",
+      "Address": "mangalam,Tirupur",
+      "Balance": "10008",
+      "id": 1
+    },
+    {
+      "AccNo": "123456",
+      "AccHolderName": "Hari",
+      "AccType": "Savings",
+      "Address": "namakal,tamilnadu",
+      "Balance": "50000",
+      "id": 2
+    },
+    {
+      "AccNo": "123434",
+      "AccHolderName": "Siva",
+      "AccType": "Savings",
+      "Address": "kanyakumari,Tamilnadu",
+      "Balance": "56000",
+      
+      "id": 3
+    },
+    {
+      "AccNo": "654321",
+      "AccHolderName": "Hemanth",
+      "AccType": "Savings",
+      "Address": "Coimbatore,Tamilnadu",
+      "Balance": "80000",
+      "id": 4
+    },
+    {
+      "AccNo": "678943",
+      "AccHolderName": "Stella",
+      "AccType": "Current",
+      "Address": "New york,US",
+      "Balance": "25000",
+      "id": 6
+    },
+    {
+      "AccNo": "867676",
+      "AccHolderName": "Mark zuckberg",
+      "AccType": "Current",
+      "Address": "Ciattle,USA",
+      "Balance": "78000",
+      "id": 7
+    },
+    {
+      "AccNo": "567003",
+      "AccHolderName": "john",
+      "AccType": "Savings",
+      "Address": "canada",
+      "Balance": "567000",
+      "id": 8
+    },
+    {
+      "AccNo": "456222",
+      "AccHolderName": "Ben stokes",
+      "AccType": "Savings",
+      "Address": "London,UK",
+      "Balance": "50000",
+      
+      "id": 9
+    },
+    {
+      "AccNo": "74832233",
+      "AccHolderName": "Sam",
+      "AccType": "Savings",
+      "Address": "Oval,UK",
+      "Balance": "34000",
+      "id": 10
+    },
+    {
+      "AccHolderName": "vijay",
+      "AccNo": "5446",
+      "AccType": "savings",
+      "Address": "fdfe",
+      "Balance": "70000",
+      "id": 11
+    }
+  ]
+}

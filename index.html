@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  <title>CRUD FROM API</title>
+  <style>
+    h2 {
+      color: #000305;
+      font-family: sans-serif;
+      border: #000000;
+    }
+
+    .bg-mynav {
+      background-color: #000000;
+    }
+
+    body {
+      font-size: 1.25rem;
+      background-color: #ebe7de;
+    }
+
+    .card {
+      margin-bottom: 20px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .card-text {
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      margin-bottom: 10px;
+    }
+  </style>
+
+  <script>
+    // Load table function
+    function loadTable(AccHolderName = '') {
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", `http://localhost:3000/Account?AccHolderName_like=${AccHolderName}`);
+      xhttp.send();
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          const cardContainer = document.getElementById("card-container");
+          cardContainer.innerHTML = ""; // Clear existing cards
+
+          const objects = JSON.parse(this.responseText);
+          for (let object of objects) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            const cardBody = document.createElement("div");
+            cardBody.classList.add("card-body");
+
+            const title = document.createElement("h5");
+            title.classList.add("card-title");
+            title.textContent = object["AccHolderName"];
+
+            const accNo = document.createElement("p");
+            accNo.classList.add("card-text");
+            accNo.textContent = "Account Number: " + object["AccNo"];
+
+            const accType = document.createElement("p");
+            accType.classList.add("card-text");
+            accType.textContent = "Account Type: " + object["AccType"];
+
+            const address = document.createElement("p");
+            address.classList.add("card-text");
+            address.textContent = "Address: " + object["Address"];
+
+            const balance = document.createElement("p");
+            balance.classList.add("card-text");
+            balance.textContent = "Balance: " + object["Balance"];
+
+            const editButton = document.createElement("button");
+            editButton.classList.add("btn", "btn-outline-secondary", "me-2");
+            editButton.textContent = "Edit";
+            editButton.addEventListener("click", function () {
+              showUserEditBox(object["id"]);
+            });
+
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add("btn", "btn-outline-danger");
+            deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click", function () {
+              userDelete(object["id"]);
+            });
+
+            cardBody.appendChild(title);
+            cardBody.appendChild(accNo);
+            cardBody.appendChild(accType);
+            cardBody.appendChild(address);
+            cardBody.appendChild(balance);
+            cardBody.appendChild(editButton);
+            cardBody.appendChild(deleteButton);
+            card.appendChild(cardBody);
+            cardContainer.appendChild(card);
+          }
+        }
+      };
+    }
+
+    // Search function
+    function searchTable() {
+      const input = document.getElementById("search-input");
+      const value = input.value;
+      loadTable(value);
+    }
+
+    // Show add user form
+    function showUserAddBox() {
+      const addForm = document.getElementById("add-form");
+      addForm.style.display = "block";
+    }
+
+    // Hide add user form
+    function hideUserAddBox() {
+      const addForm = document.getElementById("add-form");
+      addForm.style.display = "none";
+    }
+
+    // Add user
+    function userAdd() {
+      const nameInput = document.getElementById("add-name-input");
+      const accNoInput = document.getElementById("add-accno-input");
+      const accTypeInput = document.getElementById("add-acctype-input");
+      const addressInput = document.getElementById("add-address-input");
+      const balanceInput = document.getElementById("add-balance-input");
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://localhost:3000/Account");
+      xhttp.setRequestHeader("Content-type", "application/json");
+      const data = JSON.stringify({
+        "AccHolderName": nameInput.value,
+        "AccNo": accNoInput.value,
+        "AccType": accTypeInput.value,
+        "Address": addressInput.value,
+        "Balance": balanceInput.value
+      });
+      xhttp.send(data);
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 201) {
+          console.log(this.responseText);
+          loadTable(); // Reload table
+          hideUserAddBox(); // Hide add user form
+        }
+      };
+    }
+
+    // Show edit user form
+    function showUserEditBox(id) {
+      const editForm = document.getElementById("edit-form");
+      editForm.style.display = "block";
+
+      const idInput = document.getElementById("edit-id-input");
+      idInput.value = id;
+
+      const nameInput = document.getElementById("edit-name-input");
+      const accNoInput = document.getElementById("edit-accno-input");
+      const accTypeInput = document.getElementById("edit-acctype-input");
+      const addressInput = document.getElementById("edit-address-input");
+      const balanceInput = document.getElementById("edit-balance-input");
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", `http://localhost:3000/Account/${id}`);
+      xhttp.send();
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          const object = JSON.parse(this.responseText);
+
+          nameInput.value = object["AccHolderName"];
+          accNoInput.value = object["AccNo"];
+          accTypeInput.value = object["AccType"];
+          addressInput.value = object["Address"];
+          balanceInput.value = object["Balance"];
+        }
+      };
+    }
+
+    // Hide edit user form
+    function hideUserEditBox() {
+      const editForm = document.getElementById("edit-form");
+      editForm.style.display = "none";
+    }
+
+    // Edit user
+    function userEdit() {
+      const idInput = document.getElementById("edit-id-input");
+      const nameInput = document.getElementById("edit-name-input");
+      const accNoInput = document.getElementById("edit-accno-input");
+      const accTypeInput = document.getElementById("edit-acctype-input");
+      const addressInput = document.getElementById("edit-address-input");
+      const balanceInput = document.getElementById("edit-balance-input");
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("PUT", `http://localhost:3000/Account/${idInput.value}`);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      const data = JSON.stringify({
+        "AccHolderName": nameInput.value,
+        "AccNo": accNoInput.value,
+        "AccType": accTypeInput.value,
+        "Address": addressInput.value,
+        "Balance": balanceInput.value
+      });
+      xhttp.send(data);
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          loadTable(); // Reload table
+          hideUserEditBox(); // Hide edit user form
+        }
+      };
+    }
+
+    // Delete user
+    function userDelete(id) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("DELETE", `http://localhost:3000/Account/${id}`);
+      xhttp.send();
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          loadTable(); // Reload table
+        }
+      };
+    }
+
+    // Initial load
+    document.addEventListener("DOMContentLoaded", function () {
+      loadTable();
+    });
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-mynav">
+    <div class="container">
+      <a class="navbar-brand" href="#">CRUD App</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Account Details</h2>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-outline-primary" onclick="showUserAddBox()">Add Person</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search-input" placeholder="Search by Account Holder Name"
+            oninput="searchTable()">
+          <button class="btn btn-outline-secondary" type="button" id="search-button"
+            onclick="searchTable()">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="row" id="card-container"></div>
+
+    <!-- Add user form -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" id="add-form" style="display: none;">
+          <div class="card-body">
+            <h5 class="card-title">Add Person</h5>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="add-name-input" placeholder="Account Holder Name">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="add-accno-input" placeholder="Account Number">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="add-acctype-input" placeholder="Account Type">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="add-address-input" placeholder="Address">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="add-balance-input" placeholder="Balance">
+            </div>
+            <button class="btn btn-success" onclick="userAdd()">Add</button>
+            <button class="btn btn-secondary" onclick="hideUserAddBox()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit user form -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" id="edit-form" style="display: none;">
+          <div class="card-body">
+            <h5 class="card-title">Edit Person</h5>
+            <div class="mb-3">
+              <input type="hidden" id="edit-id-input">
+              <input type="text" class="form-control" id="edit-name-input" placeholder="Account Holder Name">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="edit-accno-input" placeholder="Account Number">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="edit-acctype-input" placeholder="Account Type">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="edit-address-input" placeholder="Address">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="edit-balance-input" placeholder="Balance">
+            </div>
+            <button class="btn btn-success" onclick="userEdit()">Save</button>
+            <button class="btn btn-secondary" onclick="hideUserEditBox()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pzjB+1WKYdPqgYHNRYfv7kyySgCva5HZG5EPT0o3StfYQ2BRuzQG7hhpux2spzPt" crossorigin="anonymous"></script>
+</body>
+
+</html>
