@@ -164,7 +164,20 @@
             if (customerID === '10') {
               // Redirect the user with customer ID 10 to a different page
               window.location.href = 'http://127.0.0.1:5500/user.html';
-            } else {
+            } 
+            if(customerID === '9'){
+              window.location.href = 'http://127.0.0.1:5500/user2.html'
+            }
+            if(customerID === '8'){
+              window.location.href = 'http://127.0.0.1:5500/user3.html'
+            }
+            if(customerID === '7'){
+              window.location.href = 'http://127.0.0.1:5500/user4.html'
+            }
+            if(customerID === '6'){
+              window.location.href = 'http://127.0.0.1:5500/user5.html'
+            }
+            else {
               Swal.fire({
                 icon: 'error',
                 title: 'Invalid Customer ID',
