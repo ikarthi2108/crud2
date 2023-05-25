@@ -24,6 +24,7 @@
     body {
       font-size: 1rem;
       background-color: #ebe7de;
+      background-image: url(assests/bg1.webp);
      
     }
 
@@ -60,7 +61,7 @@
     top: 60px;
     right: 20px;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #ee0e0e;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -74,6 +75,22 @@
   .sign-out-button:hover{
     transform: scale(1.1);
   }
+
+  .input-group {
+  display: flex;
+  align-items: center;
+  width: 1200px;
+}
+
+.input-group .form-control {
+  flex: 1;
+  margin-right: 100px;
+  margin-top: 10px;
+  width: 1000px;
+}
+
+
+
     
   </style>
  
@@ -272,11 +289,12 @@
     </div>
   </nav>
   <div class="container mt-4">
-    <h2>Account List</h2>
-    <div class="mb-3">
+    <h2 style="color: #fff;">IDEAL BANK</h2>
+    <div class="input-group mb-3">
       <input type="text" class="form-control" id="search-acc-holder-name" placeholder="Search by Account Holder Name">
-      <button class="btn btn-primary mt-2" onclick="searchByAccHolderName()">Search</button>
+      <button class="btn btn-primary" onclick="searchByAccHolderName()">Search</button>
     </div>
+    
     <button class="btn btn-primary mb-2" onclick="toggleAddForm()">Add New Account</button>
     <div id="add-form" style="display: none;">
       <h4>Add New Account</h4>
