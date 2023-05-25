@@ -54,10 +54,31 @@
     .form-control {
       margin-bottom: 10px;
     }
+
+    .sign-out-button {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .sign-out-button:hover {
+    background-color: #45a049;
+  }
+  .sign-out-button:hover{
+    transform: scale(1.1);
+  }
     
   </style>
  
 
+ <a href="http://127.0.0.1:5500/main.html"> <button class="sign-out-button" >Sign Out</button></a>
   <script>
     // Load table function
     function loadTable(AccHolderName = '') {
