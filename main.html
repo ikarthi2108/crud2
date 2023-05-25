@@ -92,6 +92,12 @@
       font-size: 18px;
       margin-bottom: 40px;
     }
+    .carousel:hover{
+      transform: scale(1.1);
+    }
+    .btn:hover{
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
@@ -130,6 +136,7 @@
         html: `
           ${userType === 'Admin' ? '<input type="password" id="adminPin" class="swal2-input" placeholder="Admin Pin">' : ''}
           ${userType === 'User' ? '<input type="text" id="customerID" class="swal2-input" placeholder="Customer ID">' : ''}
+          ${userType === 'User' ? '<input type="password" id="passcode" class="swal2-input" placeholder="Passcode">' : ''}
         `,
         showCancelButton: true,
         confirmButtonText: 'Login',
@@ -140,7 +147,8 @@
             return { adminPin: adminPin };
           } else if (userType === 'User') {
             const customerID = document.getElementById('customerID').value;
-            return { customerID: customerID };
+            const passcode = document.getElementById('passcode').value;
+            return { customerID: customerID, passcode: passcode };
           }
         }
       }).then((result) => {
@@ -161,27 +169,23 @@
             }
           } else if (userType === 'User') {
             const customerID = result.value.customerID;
-            if (customerID === '10') {
+            const passcode = result.value.passcode;
+            if (customerID === '10' && passcode === '1234') {
               // Redirect the user with customer ID 10 to a different page
               window.location.href = 'http://127.0.0.1:5500/user.html';
-            } 
-            if(customerID === '9'){
-              window.location.href = 'http://127.0.0.1:5500/user2.html'
-            }
-            if(customerID === '8'){
-              window.location.href = 'http://127.0.0.1:5500/user3.html'
-            }
-            if(customerID === '7'){
-              window.location.href = 'http://127.0.0.1:5500/user4.html'
-            }
-            if(customerID === '6'){
-              window.location.href = 'http://127.0.0.1:5500/user5.html'
-            }
-            else {
+            } else if (customerID === '9' && passcode === '1234') {
+              window.location.href = 'http://127.0.0.1:5500/user2.html';
+            } else if (customerID === '8' && passcode === '1234') {
+              window.location.href = 'http://127.0.0.1:5500/user3.html';
+            } else if (customerID === '7' && passcode === '1234') {
+              window.location.href = 'http://127.0.0.1:5500/user4.html';
+            } else if (customerID === '6' && passcode === '1234') {
+              window.location.href = 'http://127.0.0.1:5500/user5.html';
+            } else {
               Swal.fire({
                 icon: 'error',
-                title: 'Invalid Customer ID',
-                text: 'Please enter a valid customer ID.',
+                title: 'Invalid Customer ID or Passcode',
+                text: 'Please enter a valid customer ID and passcode.',
                 confirmButtonText: 'OK'
               });
             }
