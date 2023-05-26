@@ -1,7 +1,7 @@
 {
   "Account": [
     {
-      "AccHolderName": "Hariii",
+      "AccHolderName": "Hari",
       "AccNo": "12345",
       "AccType": "Savings",
       "Address": "namakal,tamilnadu",
@@ -47,6 +47,14 @@
       "Address": "chennai",
       "Balance": "78900",
       "id": 10
+    },
+    {
+      "AccHolderName": "rahul",
+      "AccNo": "534534",
+      "AccType": "current",
+      "Address": "3,fast and furios",
+      "Balance": "56700",
+      "id": 11
     }
   ]
 }
