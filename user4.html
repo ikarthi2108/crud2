@@ -166,6 +166,9 @@
       text-decoration: none;
       color: #f6faf7;
      }
+     .profile-card:hover{
+      transform: scale(0.9);
+     }
    
   </style>
 </head>
@@ -189,7 +192,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="card">
-          <h2>Apply for Credit Card</h2>
+          <h2>Apply for Card</h2>
           <div class="card-content">
             <img src="assests/c-3.jpg" alt="Credit Card Icon">
             <p>Apply for a new credit card to enjoy exclusive benefits and rewards.</p>
@@ -201,7 +204,7 @@
       </div>
       <div class="col-md-6">
         <div class="card">
-          <h2>Apply for Home Loan</h2>
+          <h2>Apply for Home Loans</h2>
           <div class="card-content">
             <img src="assests/ploan.jpg" alt="Personal Loan Icon">
             <p>Apply for a personal loan to fulfill your financial needs.</p>
@@ -218,6 +221,7 @@
         <p><strong>Account Holder Name:</strong>chirs</p>
         <p><strong>Account Number:</strong> 674862</p>
         <p><strong>Account Type:</strong> savings</p>
+        <p><strong>IFSC Code:</strong>BAN004</p>
         <p><strong>Address:</strong>Mumbai</p>
         <p id="balance"><strong>Balance:</strong>50000</p>
         <p><strong>ID:</strong> 9</p>
@@ -235,7 +239,7 @@
     const withdrawBtn = document.getElementById('withdraw-btn');
     const depositBtn = document.getElementById('deposit-btn');
     const balanceElement = document.getElementById('balance');
-    let balance = 78900; // Initial balance
+    let balance = 50000; // Initial balance
 
     withdrawBtn.addEventListener('click', () => {
       Swal.fire({

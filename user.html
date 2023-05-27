@@ -166,7 +166,10 @@
       text-decoration: none;
       color: #f6faf7;
      }
-   
+    
+     .profile-card:hover{
+      transform: scale(0.9);
+     }
   </style>
 </head>
 <body>
@@ -201,7 +204,7 @@
       </div>
       <div class="col-md-6">
         <div class="card">
-          <h2>Apply for Home Loan</h2>
+          <h2>Apply for Loans</h2>
           <div class="card-content">
             <img src="assests/ploan.jpg" alt="Personal Loan Icon">
             <p>Apply for a personal loan to fulfill your financial needs.</p>
@@ -218,6 +221,7 @@
         <p><strong>Account Holder Name:</strong>shroov</p>
         <p><strong>Account Number:</strong> 789777</p>
         <p><strong>Account Type:</strong> savings</p>
+        <p><strong>IFSC Code:</strong>BAN002</p>
         <p><strong>Address:</strong>chennai</p>
         <p id="balance"><strong>Balance:</strong> 70000</p>
         <p><strong>ID:</strong> 6</p>
@@ -236,47 +240,61 @@
     const withdrawBtn = document.getElementById('withdraw-btn');
     const depositBtn = document.getElementById('deposit-btn');
     const balanceElement = document.getElementById('balance');
-    let balance = 78900; // Initial balance
+    let balance = 70000; // Initial balance
 
     withdrawBtn.addEventListener('click', () => {
-      Swal.fire({
-        title: 'Withdraw Amount',
-        input: 'number',
-        inputLabel: 'Enter the amount',
-        inputAttributes: {
-          step: 'any',
-          min: 0,
-          max: balance // Maximum withdrawal amount is the current balance
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Withdraw',
-        cancelButtonText: 'Cancel',
-        showLoaderOnConfirm: true,
-        preConfirm: (amount) => {
-          // Process the withdrawal logic here
-          // You can perform AJAX requests or handle the logic locally
-          // Replace the following lines with your own logic
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              // Update the balance
-              balance -= Number(amount);
-              resolve();
-            }, 1000);
-          });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Update the balance element with the new balance
-          balanceElement.innerText = `Balance: ${balance.toLocaleString()}`;
-          Swal.fire({
-            icon: 'success',
-            title: 'Withdrawal Successful',
-            text: 'Amount has been withdrawn.'
-          });
-        }
+  Swal.fire({
+    title: 'Withdraw Amount',
+    input: 'number',
+    inputLabel: 'Enter the amount',
+    inputAttributes: {
+      step: 'any',
+      min: 0,
+      max: balance // Maximum withdrawal amount is the current balance
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Withdraw',
+    cancelButtonText: 'Cancel',
+    showLoaderOnConfirm: true,
+    preConfirm: (amount) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Convert the amount to a number
+          const withdrawalAmount = Number(amount);
+          
+          // Check if the withdrawal amount is valid
+          if (withdrawalAmount > balance) {
+            reject('Insufficient balance');
+            return;
+          }
+          
+          // Update the balance
+          balance -= withdrawalAmount;
+          
+          resolve();
+        }, 1000);
       });
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Update the balance element with the new balance
+      balanceElement.innerText = `Balance: ${balance.toLocaleString()}`;
+      Swal.fire({
+        icon: 'success',
+        title: 'Withdrawal Successful',
+        text: 'Amount has been withdrawn.'
+      });
+    }
+  }).catch((error) => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Withdrawal Failed',
+      text: error
     });
+  });
+});
+
 
     depositBtn.addEventListener('click', () => {
       Swal.fire({

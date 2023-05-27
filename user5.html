@@ -170,6 +170,9 @@
       text-decoration: none;
       color: #f6faf7;
      }
+     .profile-card:hover{
+      transform: scale(0.9);
+     }
   </style>
 </head>
 <body>
@@ -204,7 +207,7 @@
       </div>
       <div class="col-md-6">
         <div class="card">
-          <h2>Apply for Home Loan</h2>
+          <h2>Apply for Loans</h2>
           <div class="card-content">
             <img src="assests/ploan.jpg" alt="Personal Loan Icon">
             <p>Apply for a personal loan to fulfill your financial needs.</p>
@@ -221,6 +224,7 @@
         <p><strong>Account Holder Name:</strong>Jos</p>
         <p><strong>Account Number:</strong> 234243</p>
         <p><strong>Account Type:</strong> savings</p>
+        <p><strong>IFSC Code:</strong>BAN005</p>
         <p><strong>Address:</strong>Chennai</p>
         <p id="balance"><strong>Balance:</strong> 90000</p>
         <p><strong>ID:</strong> 10</p>
@@ -239,7 +243,7 @@
     const withdrawBtn = document.getElementById('withdraw-btn');
     const depositBtn = document.getElementById('deposit-btn');
     const balanceElement = document.getElementById('balance');
-    let balance = 78900; // Initial balance
+    let balance = 90000; // Initial balance
 
     withdrawBtn.addEventListener('click', () => {
       Swal.fire({
