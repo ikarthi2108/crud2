@@ -1,60 +1,20 @@
 {
   "Account": [
     {
-      "AccHolderName": "Hari",
-      "AccNo": "12345",
-      "AccType": "Savings",
-      "Address": "namakal,tamilnadu",
-      "Balance": "50000",
-      "id": 2
-    },
-    {
-      "AccHolderName": "Siva",
-      "AccNo": "123434",
-      "AccType": "Savings",
-      "Address": "kanyakumari,Tamilnadu",
-      "Balance": "560",
-      "id": 3
-    },
-    {
-      "AccNo": "654321",
-      "AccHolderName": "Hemanth",
-      "AccType": "Savings",
-      "Address": "Coimbatore,Tamilnadu",
-      "Balance": "80000",
-      "id": 4
-    },
-    {
-      "AccNo": "678943",
-      "AccHolderName": "Stella",
-      "AccType": "Current",
-      "Address": "New york,US",
-      "Balance": "25000",
-      "id": 6
-    },
-    {
-      "AccNo": "456222",
-      "AccHolderName": "Ben stokes",
-      "AccType": "Savings",
-      "Address": "London,UK",
-      "Balance": "50000",
-      "id": 9
-    },
-    {
-      "AccHolderName": "vijay",
-      "AccNo": "787799",
+      "AccHolderName": "ajay",
+      "AccNo": "5664564",
       "AccType": "savings",
-      "Address": "chennai",
-      "Balance": "78900",
-      "id": 10
+      "Address": "4,hgfssg",
+      "Balance": "56444",
+      "id": 1
     },
     {
-      "AccHolderName": "rahul",
-      "AccNo": "534534",
-      "AccType": "current",
-      "Address": "3,fast and furios",
-      "Balance": "56700",
-      "id": 11
+      "AccHolderName": "rfgve",
+      "AccNo": "dfg",
+      "AccType": "fgrbrf",
+      "Address": "gfre",
+      "Balance": "greg",
+      "id": 2
     }
   ]
 }
